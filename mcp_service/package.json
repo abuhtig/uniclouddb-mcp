@@ -1,0 +1,19 @@
+{
+  "name": "mcp_service",
+  "main": "index.js",
+  "version": "1.0.0",
+  "description": "",
+  "cloudfunction-config": {
+    "concurrency": 1,
+    "memorySize": 512,
+    "path": "",
+    "timeout": 590,
+    "runtime": "Nodejs12"
+  },
+  "dependencies": {
+    "uni-config-center": "file:../../../uni_modules/uni-config-center/uniCloud/cloudfunctions/common/uni-config-center",
+    "uni-id": "file:../../../uni_modules/uni-id/uniCloud/cloudfunctions/common/uni-id",
+    "vk-unicloud": "file:../../../uni_modules/vk-unicloud/uniCloud/cloudfunctions/common/vk-unicloud"
+  },
+  "extensions": {}
+}

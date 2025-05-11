@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "uniclouddb": {
+      "name": "uniclouddb",
+      "key": "uniclouddb",
+      "command": "node",
+      "args":[
+        "D:\\AI\\uniCloudDB-mcp\\index.js"
+      ],
+      "disabled": false,
+      "env": {}
+    }
+  }
+}
