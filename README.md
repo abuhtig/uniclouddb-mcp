@@ -15,7 +15,7 @@
 - 适配主流的 AI 模型工具调用
 - 支持本地运行，修改源码
 
-### 直接配置MCP使用
+# 直接配置MCP使用
 
 ```json
 {
@@ -30,7 +30,7 @@
 ```
 
 
-### 本地运行使用方法
+# 本地运行使用方法
 
 ## 安装
 
@@ -42,20 +42,20 @@ npm install uniclouddb-mcp
 你可以通过环境变量配置数据库服务参数：
 
 ```bash
-# .env 文件
+# config 文件
 DB_SERVICE_URL=https://你的uniCloud云函数URL/mcp
 REQUEST_TIMEOUT=30000
 ```
 
-# 复制 mcp_service 文件夹到 自己项目的uniCloud/cloudfunctions 目录下并上传云函数
+## 复制 mcp_service 文件夹到 自己项目的uniCloud/cloudfunctions 目录下并上传云函数
 
-# 打开uniCloud web 控制台，找到mcp_service云函数，设置云函数URL化
+## 打开uniCloud web 控制台，找到mcp_service云函数，设置云函数URL化
 
 
 设置通过HTTP或HTTPS访问本云函数的URL。域名在云函数列表界面绑定，此处仅设置path。 参考文档:   https://uniapp.dcloud.io/uniCloud/http
 
 
-# 设置mcp service
+## 设置mcp service
 
 ```json
 {
