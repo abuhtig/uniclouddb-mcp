@@ -36,13 +36,7 @@
  */
 
 // 引入 vk-unicloud
-const vkCloud = require('vk-unicloud');
 var db = uniCloud.database(); // 全局数据库引用
-// 通过 vkCloud.createInstance 创建 vk 实例
-const vk = vkCloud.createInstance({
-  baseDir: __dirname,
-  requireFn: require,
-});
 
 /**
  * 数据库操作处理函数
