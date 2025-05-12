@@ -27,7 +27,7 @@ const REQUEST_TIMEOUT = getRequestTimeout();
  * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {Promise<object>} 查询结果
  */
-export async function queryDatabase(
+async function queryDatabase(
   collection,
   where,
   options = {},
@@ -86,7 +86,7 @@ export async function queryDatabase(
  * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {Promise<object>} 操作结果
  */
-export async function addToDatabase(collection, data, dbUrl = DEFAULT_DB_URL) {
+async function addToDatabase(collection, data, dbUrl = DEFAULT_DB_URL) {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
@@ -133,12 +133,7 @@ export async function addToDatabase(collection, data, dbUrl = DEFAULT_DB_URL) {
  * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {Promise<object>} 操作结果
  */
-export async function updateDatabase(
-  collection,
-  where,
-  data,
-  dbUrl = DEFAULT_DB_URL
-) {
+async function updateDatabase(collection, where, data, dbUrl = DEFAULT_DB_URL) {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
@@ -185,11 +180,7 @@ export async function updateDatabase(
  * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {Promise<object>} 操作结果
  */
-export async function removeFromDatabase(
-  collection,
-  where,
-  dbUrl = DEFAULT_DB_URL
-) {
+async function removeFromDatabase(collection, where, dbUrl = DEFAULT_DB_URL) {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
@@ -238,7 +229,7 @@ export async function removeFromDatabase(
  * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {object} 工具响应
  */
-export async function handleQueryTool(params, dbUrl) {
+async function handleQueryTool(params, dbUrl) {
   const { collection, where, field, orderBy, limit, skip } = params;
 
   try {
@@ -268,7 +259,7 @@ export async function handleQueryTool(params, dbUrl) {
  * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {object} 工具响应
  */
-export async function handleAddTool(params, dbUrl) {
+async function handleAddTool(params, dbUrl) {
   const { collection, data } = params;
 
   try {
@@ -291,7 +282,7 @@ export async function handleAddTool(params, dbUrl) {
  * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {object} 工具响应
  */
-export async function handleUpdateTool(params, dbUrl) {
+async function handleUpdateTool(params, dbUrl) {
   const { collection, where, data } = params;
 
   try {
@@ -314,7 +305,7 @@ export async function handleUpdateTool(params, dbUrl) {
  * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {object} 工具响应
  */
-export async function handleRemoveTool(params, dbUrl) {
+async function handleRemoveTool(params, dbUrl) {
   const { collection, where } = params;
 
   try {
@@ -335,7 +326,7 @@ export async function handleRemoveTool(params, dbUrl) {
  *
  * @returns {object} 提示内容
  */
-export function getHelpPrompt() {
+function getHelpPrompt() {
   return {
     messages: [
       {
@@ -373,7 +364,7 @@ export function getHelpPrompt() {
  * @param {string} options.dbServiceUrl - 从环境变量获取的数据库服务URL
  * @returns {object} 工具定义对象
  */
-export function getToolDefinitions(z, options = {}) {
+function getToolDefinitions(z, options = {}) {
   // 如果有传入dbServiceUrl则优先使用，否则使用配置
   const dbServiceUrl = options.dbServiceUrl || DEFAULT_DB_URL;
 
@@ -430,3 +421,17 @@ export function getToolDefinitions(z, options = {}) {
     },
   };
 }
+
+// 统一导出所有方法
+export {
+  queryDatabase,
+  addToDatabase,
+  updateDatabase,
+  removeFromDatabase,
+  handleQueryTool,
+  handleAddTool,
+  handleUpdateTool,
+  handleRemoveTool,
+  getHelpPrompt,
+  getToolDefinitions,
+};
