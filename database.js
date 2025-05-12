@@ -337,7 +337,7 @@ export function getToolDefinitions(z) {
   return {
     // 查询工具
     queryTool: {
-      name: 'mcp_uniclouddb_query',
+      name: 'query',
       params: {
         collection: z.string().describe('集合名称'),
         where: z.record(z.any()).describe('查询条件 (JQL格式)'),
@@ -357,7 +357,7 @@ export function getToolDefinitions(z) {
 
     // 添加工具
     addTool: {
-      name: 'mcp_uniclouddb_add',
+      name: 'add',
       params: {
         collection: z.string().describe('集合名称'),
         data: z.record(z.any()).describe('要添加的数据 (JQL格式)'),
@@ -367,7 +367,7 @@ export function getToolDefinitions(z) {
 
     // 更新工具
     updateTool: {
-      name: 'mcp_uniclouddb_update',
+      name: 'update',
       params: {
         collection: z.string().describe('集合名称'),
         where: z.record(z.any()).describe('查询条件 (JQL格式)'),
@@ -378,7 +378,7 @@ export function getToolDefinitions(z) {
 
     // 删除工具
     removeTool: {
-      name: 'mcp_uniclouddb_remove',
+      name: 'remove',
       params: {
         collection: z.string().describe('集合名称'),
         where: z.record(z.any()).describe('查询条件 (JQL格式)'),

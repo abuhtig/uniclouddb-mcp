@@ -79,9 +79,4 @@ async function main() {
   }
 }
 
-// 如果直接运行此文件，则启动服务
-if (import.meta.url === `file://${process.argv[1]}`) {
-  main();
-}
-
-export { main };
+main();
