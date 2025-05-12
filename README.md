@@ -2,7 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/uniclouddb-mcp.svg)](https://www.npmjs.com/package/uniclouddb-mcp)
 [![Node.js Version](https://img.shields.io/node/v/uniclouddb-mcp.svg)](https://nodejs.org)
-[![License](https://img.shields.io/npm/l/uniclouddb-mcp.svg)](https://github.com/username/uniclouddb-mcp/blob/main/LICENSE)
+[![License](https://img.shields.io/npm/l/uniclouddb-mcp.svg)](https://github.com/abuhtig/uniclouddb-mcp/LICENSE)
 
 基于 MCP 协议的 uniCloud 数据库操作工具，支持通过 AI 助手进行数据库 CRUD 操作。
 
@@ -13,16 +13,31 @@
 - 支持查询、添加、更新和删除等常用操作
 - 简单易用的 API 设计
 - 适配主流的 AI 模型工具调用
+- 支持本地运行，修改源码
+
+### 直接配置MCP使用
+
+```json
+{
+ "uniclouddb-mcp": {
+    "command": "npx",
+    "args": ["-y", "uniclouddb-mcp"],
+    "env": {
+      "DB_SERVICE_URL": "https://你的uniCloud云函数URL.next.bspapp.com/mcp"
+    }
+  }
+}
+```
+
+
+### 本地运行使用方法
 
 ## 安装
 
 ```bash
 npm install uniclouddb-mcp
 ```
-
-## 基本配置
-
-### 环境变量配置
+## 环境变量配置
 
 你可以通过环境变量配置数据库服务参数：
 
@@ -32,70 +47,36 @@ DB_SERVICE_URL=https://你的uniCloud云函数URL/mcp
 REQUEST_TIMEOUT=30000
 ```
 
-## 使用方法
+# 复制 mcp_service 文件夹到 自己项目的uniCloud/cloudfunctions 目录下并上传云函数
 
-### 1. 启动 MCP 服务
+# 打开uniCloud web 控制台，找到mcp_service云函数，设置云函数URL化
 
-```bash
-# 直接启动服务
-npm start
 
-# 开发模式（自动重载）
-npm run dev
-```
+设置通过HTTP或HTTPS访问本云函数的URL。域名在云函数列表界面绑定，此处仅设置path。 参考文档:   https://uniapp.dcloud.io/uniCloud/http
 
-### 2. 作为 JS 模块使用
 
-```javascript
-// 导入并启动 MCP 服务
-import { main } from 'uniclouddb-mcp';
-main();
+# 设置mcp service
 
-// 直接使用数据库操作函数
-import { 
-  queryDatabase, 
-  addToDatabase, 
-  updateDatabase, 
-  removeFromDatabase 
-} from 'uniclouddb-mcp/database.js';
-
-// 查询示例
-const result = await queryDatabase(
-  'collection_name',  // 集合名称
-  { status: 'active' },  // 查询条件
-  {
-    field: { name: 1, age: 1 },  // 返回字段
-    limit: 10,  // 返回数量限制
-    skip: 0,  // 跳过记录数
-    orderBy: { field: 'createdAt', order: 'desc' }  // 排序
+```json
+{
+ "uniclouddb": {
+      "name": "uniclouddb",
+      "key": "uniclouddb",
+      "command": "node",
+      "args":[
+        "D:\\uniCloudDB-mcp\\index.js"
+      ],
+      "disabled": false,
+      "env": {}
   }
-);
-
-// 添加示例
-await addToDatabase(
-  'collection_name',  // 集合名称
-  { name: '测试', age: 25 }  // 添加的数据
-);
-
-// 更新示例
-await updateDatabase(
-  'collection_name',  // 集合名称
-  { _id: 'document_id' },  // 更新条件
-  { age: 26 }  // 更新数据
-);
-
-// 删除示例
-await removeFromDatabase(
-  'collection_name',  // 集合名称
-  { _id: 'document_id' }  // 删除条件
-);
+}
 ```
 
 ## MCP 工具说明
 
 本库提供以下 MCP 工具，可供 AI 助手直接调用：
 
-### 1. mcp_uniclouddb_query - 查询数据
+### 1. query - 查询数据
 
 **参数：**
 - `collection`: 集合名称
@@ -105,20 +86,20 @@ await removeFromDatabase(
 - `skip`（可选）: 跳过记录数
 - `orderBy`（可选）: 排序条件
 
-### 2. mcp_uniclouddb_add - 添加数据
+### 2. add - 添加数据
 
 **参数：**
 - `collection`: 集合名称
-- `data`: 要添加的数据（JQL 格式）
+- `data`: 要添加的数据（object/array）
 
-### 3. mcp_uniclouddb_update - 更新数据
+### 3. update - 更新数据
 
 **参数：**
 - `collection`: 集合名称
 - `where`: 更新条件（JQL 格式）
-- `data`: 要更新的数据（JQL 格式）
+- `data`: 要更新的数据（object）
 
-### 4. mcp_uniclouddb_remove - 删除数据
+### 4. remove - 删除数据
 
 **参数：**
 - `collection`: 集合名称

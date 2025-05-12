@@ -1,6 +1,6 @@
 {
   "name": "uniclouddb-mcp",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "基于MCP协议的uniCloud数据库操作工具，支持通过AI助手进行数据库CRUD操作",
   "main": "index.js",
   "type": "module",
@@ -17,11 +17,17 @@
     "jql",
     "uniclouddb"
   ],
+  "bin": {
+    "uniclouddb-mcp": "./index.js"
+  },
   "author": "June",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/abuhtig/uniclouddb-mcp"
+  },
+  "bugs": {
+    "url": "https://github.com/abuhtig/uniclouddb-mcp/issues"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.11.1",

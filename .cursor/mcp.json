@@ -8,7 +8,16 @@
         "D:\\AI\\uniCloudDB-mcp\\index.js"
       ],
       "disabled": false,
-      "env": {}
+      "env": {
+        "DB_SERVICE_URL": "https://fc-mp-.next.bspapp.com/mcp"
+      }
+    },
+    "uniclouddb-mcp": {
+      "command": "npx",
+      "args": ["-y", "uniclouddb-mcp"],
+      "env": {
+        "DB_SERVICE_URL": "https://fc-mp-.next.bspapp.com/mcp"
+      }
     }
   }
 }

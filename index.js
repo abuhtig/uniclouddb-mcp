@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * uniclouddb-mcp
  *
@@ -15,19 +16,23 @@ import { z } from 'zod';
 // 导入数据库操作模块
 import { getToolDefinitions, getHelpPrompt } from './database.js';
 
+// 获取环境变量中的URL链接
+const dbServiceUrl = process.env.DB_SERVICE_URL || '';
+console.log('数据库服务URL:', dbServiceUrl);
+
 /**
  * 创建MCP服务器实例
  * 该服务器提供标准化工具与uniCloud数据库交互
  */
 const server = new McpServer({
   name: 'UniCloudDB-MCP',
-  version: '1.0.0',
+  version: '1.0.3',
   description:
     '基于JQL的uniCloud数据库操作工具，支持查询、添加、更新和删除操作',
 });
 
 // 获取工具定义
-const tools = getToolDefinitions(z);
+const tools = getToolDefinitions(z, { dbServiceUrl });
 
 // 注册所有工具，支持完整的CRUD操作
 server.tool(

@@ -24,16 +24,26 @@ const REQUEST_TIMEOUT = getRequestTimeout();
  * @param {object} [options.orderBy] - 排序条件
  * @param {number} [options.limit] - 返回数量限制
  * @param {number} [options.skip] - 跳过记录数
+ * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {Promise<object>} 查询结果
  */
-export async function queryDatabase(collection, where, options = {}) {
+export async function queryDatabase(
+  collection,
+  where,
+  options = {},
+  dbUrl = DEFAULT_DB_URL
+) {
   try {
     // 创建请求控制器，用于超时处理
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
+    // 使用传入的dbUrl或默认URL
+    const targetUrl = dbUrl || DEFAULT_DB_URL;
+    // console.log('查询操作使用URL:', targetUrl);
+
     // 发送请求
-    const response = await fetch(DEFAULT_DB_URL, {
+    const response = await fetch(targetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -73,14 +83,19 @@ export async function queryDatabase(collection, where, options = {}) {
  *
  * @param {string} collection - 集合名称
  * @param {object} data - 要添加的数据(JQL格式)
+ * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {Promise<object>} 操作结果
  */
-export async function addToDatabase(collection, data) {
+export async function addToDatabase(collection, data, dbUrl = DEFAULT_DB_URL) {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
-    const response = await fetch(DEFAULT_DB_URL, {
+    // 使用传入的dbUrl或默认URL
+    const targetUrl = dbUrl || DEFAULT_DB_URL;
+    // console.log('添加操作使用URL:', targetUrl);
+
+    const response = await fetch(targetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -115,14 +130,24 @@ export async function addToDatabase(collection, data) {
  * @param {string} collection - 集合名称
  * @param {object} where - 查询条件(JQL格式)
  * @param {object} data - 要更新的数据(JQL格式)
+ * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {Promise<object>} 操作结果
  */
-export async function updateDatabase(collection, where, data) {
+export async function updateDatabase(
+  collection,
+  where,
+  data,
+  dbUrl = DEFAULT_DB_URL
+) {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
-    const response = await fetch(DEFAULT_DB_URL, {
+    // 使用传入的dbUrl或默认URL
+    const targetUrl = dbUrl || DEFAULT_DB_URL;
+    // console.log('更新操作使用URL:', targetUrl);
+
+    const response = await fetch(targetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -157,14 +182,23 @@ export async function updateDatabase(collection, where, data) {
  *
  * @param {string} collection - 集合名称
  * @param {object} where - 查询条件(JQL格式)
+ * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {Promise<object>} 操作结果
  */
-export async function removeFromDatabase(collection, where) {
+export async function removeFromDatabase(
+  collection,
+  where,
+  dbUrl = DEFAULT_DB_URL
+) {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
-    const response = await fetch(DEFAULT_DB_URL, {
+    // 使用传入的dbUrl或默认URL
+    const targetUrl = dbUrl || DEFAULT_DB_URL;
+    // console.log('删除操作使用URL:', targetUrl);
+
+    const response = await fetch(targetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -201,9 +235,10 @@ export async function removeFromDatabase(collection, where) {
  * 处理查询工具请求
  *
  * @param {object} params - 工具参数
+ * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {object} 工具响应
  */
-export async function handleQueryTool(params) {
+export async function handleQueryTool(params, dbUrl) {
   const { collection, where, field, orderBy, limit, skip } = params;
 
   try {
@@ -214,7 +249,7 @@ export async function handleQueryTool(params) {
       skip: skip || undefined,
     };
 
-    const data = await queryDatabase(collection, where, options);
+    const data = await queryDatabase(collection, where, options, dbUrl);
     return {
       content: [{ type: 'text', text: JSON.stringify(data, null, 2) }],
     };
@@ -230,13 +265,14 @@ export async function handleQueryTool(params) {
  * 处理添加工具请求
  *
  * @param {object} params - 工具参数
+ * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {object} 工具响应
  */
-export async function handleAddTool(params) {
+export async function handleAddTool(params, dbUrl) {
   const { collection, data } = params;
 
   try {
-    const result = await addToDatabase(collection, data);
+    const result = await addToDatabase(collection, data, dbUrl);
     return {
       content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
     };
@@ -252,13 +288,14 @@ export async function handleAddTool(params) {
  * 处理更新工具请求
  *
  * @param {object} params - 工具参数
+ * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {object} 工具响应
  */
-export async function handleUpdateTool(params) {
+export async function handleUpdateTool(params, dbUrl) {
   const { collection, where, data } = params;
 
   try {
-    const result = await updateDatabase(collection, where, data);
+    const result = await updateDatabase(collection, where, data, dbUrl);
     return {
       content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
     };
@@ -274,13 +311,14 @@ export async function handleUpdateTool(params) {
  * 处理删除工具请求
  *
  * @param {object} params - 工具参数
+ * @param {string} [dbUrl] - 自定义数据库服务URL
  * @returns {object} 工具响应
  */
-export async function handleRemoveTool(params) {
+export async function handleRemoveTool(params, dbUrl) {
   const { collection, where } = params;
 
   try {
-    const result = await removeFromDatabase(collection, where);
+    const result = await removeFromDatabase(collection, where, dbUrl);
     return {
       content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
     };
@@ -331,9 +369,14 @@ export function getHelpPrompt() {
  * 获取工具定义及其参数结构
  *
  * @param {object} z - zod验证模块
+ * @param {object} options - 选项参数
+ * @param {string} options.dbServiceUrl - 从环境变量获取的数据库服务URL
  * @returns {object} 工具定义对象
  */
-export function getToolDefinitions(z) {
+export function getToolDefinitions(z, options = {}) {
+  // 如果有传入dbServiceUrl则优先使用，否则使用配置
+  const dbServiceUrl = options.dbServiceUrl || DEFAULT_DB_URL;
+
   return {
     // 查询工具
     queryTool: {
@@ -352,7 +395,7 @@ export function getToolDefinitions(z) {
         limit: z.number().optional().describe('限制返回数量 (可选)'),
         skip: z.number().optional().describe('跳过记录数 (可选)'),
       },
-      handler: handleQueryTool,
+      handler: (params) => handleQueryTool(params, dbServiceUrl),
     },
 
     // 添加工具
@@ -360,9 +403,9 @@ export function getToolDefinitions(z) {
       name: 'add',
       params: {
         collection: z.string().describe('集合名称'),
-        data: z.record(z.any()).describe('要添加的数据 (JQL格式)'),
+        data: z.record(z.any()).describe('要添加的数据 (object/array)'),
       },
-      handler: handleAddTool,
+      handler: (params) => handleAddTool(params, dbServiceUrl),
     },
 
     // 更新工具
@@ -371,9 +414,9 @@ export function getToolDefinitions(z) {
       params: {
         collection: z.string().describe('集合名称'),
         where: z.record(z.any()).describe('查询条件 (JQL格式)'),
-        data: z.record(z.any()).describe('要更新的数据 (JQL格式)'),
+        data: z.record(z.any()).describe('要更新的数据 (object)'),
       },
-      handler: handleUpdateTool,
+      handler: (params) => handleUpdateTool(params, dbServiceUrl),
     },
 
     // 删除工具
@@ -383,7 +426,7 @@ export function getToolDefinitions(z) {
         collection: z.string().describe('集合名称'),
         where: z.record(z.any()).describe('查询条件 (JQL格式)'),
       },
-      handler: handleRemoveTool,
+      handler: (params) => handleRemoveTool(params, dbServiceUrl),
     },
   };
 }
